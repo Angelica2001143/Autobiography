@@ -1,0 +1,509 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="data.js"></script>
+
+    <style>
+        .content {
+            overflow: auto;
+        }
+
+        .content div {
+            padding: 5px;
+        }
+
+        .blue {
+            padding: 15px;
+            width: 45%;
+            background-color: #1faadb;
+        }
+
+        .green {
+            padding: 15px;
+            width: 45%;
+            background-image: url("src/bg1.jpg");
+            height: fit-content;
+            float: right;
+            
+        }
+        
+        .div3 {
+            padding: 15px;
+            width: 45%;
+            background-color: orange;
+
+        }
+
+
+        img.profile {
+            width: 20%;
+            border-radius: 50%;
+
+        }
+
+        h1 {
+            color: yellow;
+        }
+
+        h3 {
+            color: yellow;
+            size: 5px;
+            align-content: center;
+
+        }
+
+
+        body {
+            padding: 15px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100% 100%;
+        }
+
+        /* STYLE FOR TABLE IN COMMENTS */
+        #mytable,
+        td {
+
+            border: 3px solid blue;
+
+        }
+
+        /* STYLE FOR RAINBOW TEXT IN BIOGRAPHY */
+        .rainbow-letters {
+            font-size: 60px;
+            font-family: sans-serif;
+        }
+
+        .rainbow-letters span:nth-child(10n + 1) {
+            color: #ef5350;
+        }
+
+        .rainbow-letters span:nth-child(10n + 2) {
+            color: #ab47bc;
+        }
+
+        .rainbow-letters span:nth-child(10n + 3) {
+            color: #651fff;
+        }
+
+        .rainbow-letters span:nth-child(10n + 5) {
+            color: #3949ab;
+        }
+
+        .rainbow-letters span:nth-child(10n + 4) {
+            color: #2196f3;
+        }
+
+        .rainbow-letters span:nth-child(10n + 6) {
+            color: #00bcd4;
+        }
+
+        .rainbow-letters span:nth-child(10n + 7) {
+            color: #4caf50;
+        }
+
+        .rainbow-letters span:nth-child(10n + 8) {
+            color: #ffc107;
+        }
+
+        .rainbow-letters span:nth-child(10n + 9) {
+            color: #ff2407;
+        }
+
+        /* THIS IS THE STYLE FOR PRELOADING */
+        #loading .msg {
+            position: fixed;
+            top: 40%;
+            width: 100%;
+            margin-top: 20%;
+            text-align: center;
+            color: orange;
+
+        }
+
+        #loading .dot {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            margin: -64px 0 0 -64px;
+            border-radius: 50%;
+
+            border: 8px solid transparent;
+            border-top-color: #288cfb;
+
+            display: inline-block;
+            opacity: 1;
+            animation: lp 2s linear infinite;
+        }
+
+        #loading .dot:after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 4px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-bottom-color: #288cfb;
+            animation: 1p 2s linear infinite;
+        }
+
+        @keyframes lp {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        /* The grid: Four equal columns that floats next to each other */
+        .column {
+            float: left;
+            width: 25%;
+            padding: 10px;
+        }
+
+        /* Style the images inside the grid */
+        .column img {
+            opacity: 0.8;
+            cursor: pointer;
+        }
+
+        .column img:hover {
+            opacity: 1;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* The expanding image container */
+        .container {
+            position: relative;
+            display: none;
+        }
+
+        /* Expanding image text */
+        #imgtext {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            color: white;
+            font-size: 20px;
+        }
+
+        /* Closable button inside the expanded image */
+        .closebtn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: white;
+            font-size: 35px;
+            cursor: pointer;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #myImg:hover {
+            opacity: 0.7;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            padding-top: 100px;
+            /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.9);
+            /* Black w/ opacity */
+        }
+
+
+
+        /* The Close Button */
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 100% Image Width on Smaller Screens */
+        @media only screen and (max-width: 700px) {
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body onload="functionLoader()" style="background-image: url(src/bg.jpg)">
+
+    <div id="preLoad">
+        <div id="loading"
+            style="position:fixed; z-index: 9999999; top:0; left:0; right:0; bottom:0; background: #2c3e50;">
+            <div class="dot"></div>
+            <div class="msg">Loading web, please wait...</div>
+        </div>
+    </div>
+   
+    <div id="AutobioShow" style="display: none;">
+        <button>ABOUT MY HOME</button>
+        <center>
+            <h1 class="rainbow-letters">
+                <span>B</span>
+                <span>I</span>
+                <span>O</span>
+                <span>G</span>
+                <span>R</span>
+                <span>A</span>
+                <span>P</span>
+                <span>H</span>
+                <span>Y</span>
+            </h1>
+            <img id="profile" src="src/profile.png" class="profile"><br>
+            <h3 id="profile-description" style="display: none;"><mark>Hi! I am Angelica Manlapaz.❤️</mark></h3>
+            <br>
+            <h1 style="text-shadow: 5px 2px #34cc15; color:red">“Be who you are and say what you feel"</h1>
+            <div class="blue">
+                <h4>Born to a Filipina mother and a Filipino father on 2001, month of April.
+                    I am the eldest among the siblings. Currently studying at USC-TC, Philippines.
+                    My hobbies are eating, reading books, watch movies, playing badminton-chess and many to mention.
+                    My favorite foods are the kind of foods that are delicious and nutritious.
+                    My dream is to become a successful person someday.</h4>
+            </div>
+        </center>
+        <br>
+        <div class="content">
+            <br>
+            <div class="green">
+                <h3 style="text-shadow: 5px 2px #d61c0e ;">CLICK PICTURE TO KNOW WHAT THEY SAY</h3>
+                <h3 style="text-shadow: 5px 2px #772f12 ;"> DOUBLE CLICK TO VISIT THEIR ACCOUNT </h3>
+                <table>
+                    <th>
+                        <p id="p1" style="display: none;">"She is beautiful." </p>
+                        <div class="dblclick">
+                            <img id="f1" data-link="https://www.linkedin.com/in/winabel-anore-356b051a1/"
+                                src="src/tom.jfif" width="150" height="200">
+                        </div>
+                    </th><br>
+                    <th>
+                        <p id="p2" style="display: none;">"Angelica is friendly." </p>
+                        <div class="dblclick">
+                            <img id="f2" data-link="https://www.linkedin.com/in/victoriano-mulaan-moya-6073581a1/"
+                                src="src/dora.png" width="150" height="200">
+                        </div>
+                    </th><br>
+                    <th>
+                        <p id="p3" style="display: none;"> "Lovely and cute girl." </p>
+                        <div class="dblclick"> <img id="f3"
+                                data-link="https://www.linkedin.com/in/christine-rubio-6a6318207/" src="src/jerry.png"
+                                width="150" height="200">
+                        </div>
+                    </th>
+                </table>
+
+            </div>
+
+            <div class="div3">
+                <button id="button">COMMENT BUTTON</button>
+                <br><br>
+                <table style="border: 1px solid black; width: 80%; text-align:center;">
+                    <thead>
+                        <tr>
+                            <th style="border: 3px solid blue;">Name</th>
+                            <th style="border: 3px solid blue;">Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="myTable">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <center>
+
+        <div style="text-align:center">
+            <h1 style="text-shadow: 5px 2px #1013bd;">FAVORITE SCENERY</h1>
+        </div>
+
+        <!-- FOUR GALLERY -->
+        <div style="background-image:url(src/bg2.gif);" class="row">
+            <div class="column">
+                <img id="thePic1" src="src/autumn.jpg" style="width:100%" onclick="myFunction(this);">
+            </div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+
+            </div>
+            <div class="column">
+                <img id="thePic2" src="src/summer.jpg" style="width:100%" onclick="myFunction(this);">
+            </div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+
+            </div>
+            <div class="column">
+                <img id="thePic3" src="src/winter.jpg" style="width:100%" onclick="myFunction(this);">
+            </div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+
+            </div>
+            <div class="column">
+                <img id="thePic4" src="src/spring.jpg" style="width:100%" onclick="myFunction(this);">
+            </div>
+            <!-- The Modal -->
+            <div id="myModal" class="modal">
+                <span class="close">&times;</span>
+                <img class="modal-content" id="img01">
+
+            </div>
+        </div>
+
+
+
+        <div class="container">
+            <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+            <img id="expandedImg" style="width:100%" border="5">
+            <div id="imgtext"></div>
+        </div>
+
+    </center>
+
+</body>
+<!-- JS FOR  FRIENDS PIC AND  SOME PIC ANIMATIONS -->
+<script>
+    $('#profile').click(function () {
+        $('#profile').animate({
+            width: '40%',
+            height: '80%'
+        }, 2000);
+
+    })
+    $('#profile').click(function () {
+        $('#profile').animate({
+            width: '20%',
+            height: '60%'
+        }, 2000);
+
+    })
+
+    $("#profile").mouseenter(function () {
+        $("#profile-description").fadeToggle();
+    })
+    $("#profile").mouseleave(function () {
+        $("#profile-description").fadeToggle();
+    })
+    $("#profile").click(function () {
+        $("#onMouseClick").toggle();
+    })
+
+
+    $("#f1").click(function () {
+        $("#p1").toggle();
+    })
+    $("#f2").click(function () {
+        $("#p2").toggle();
+    })
+    $("#f3").click(function () {
+        $("#p3").toggle();
+    })
+    $("#f1").dblclick(function () {
+        window.location.href = $(this).data("link");
+    })
+    $("#f2").dblclick(function () {
+        window.location.href = $(this).data("link");
+    })
+    $("#f3").dblclick(function () {
+        window.location.href = $(this).data("link");
+    })
+
+
+    // Get the modal
+    var modal = document.getElementById("myModal");
+    // Get the image and insert it inside the modal
+    var img = document.getElementById("thePic1");
+    var modalImg = document.getElementById("img01");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+
+    }
+    var img = document.getElementById("thePic2");
+    var modalImg = document.getElementById("img01");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+
+    }
+    var img = document.getElementById("thePic3");
+    var modalImg = document.getElementById("img01");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+
+    }
+    var img = document.getElementById("thePic4");
+    var modalImg = document.getElementById("img01");
+    img.onclick = function () {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+
+    }
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+</script>
+
+</html>
